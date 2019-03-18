@@ -1,7 +1,10 @@
 #include <ctype.h>
+#include <stdio.h>
 
 int getch(void);
 void ungetch(int);
+
+#define NUMBER '0'
 
 int getop(char s[])
 {
@@ -10,9 +13,17 @@ int getop(char s[])
 	while ((s[0] = c = getch()) == ' '|| c == '\t')
 		;
 	s[1] = '\0';
-	if (!isdigit(c) && c != '.')
+	if (!isdigit(c) && c != '.' && c != '-')
 		return c;
 	i = 0;
+	if (c == '-')
+		if (isdigit(c = getch()))
+			s[++i] = c;
+		else {
+			if (c != EOF)
+				ungetch(c);
+			return '-';
+		}
 	if (isdigit(c))
 		while (isdigit(s[++i] = c = getch()))
 			;
