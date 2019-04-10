@@ -32,7 +32,6 @@ main()
 	while ((type = getop(s)) != EOF) {
 		switch (type) {
 		case NUMBER:
-			printf("put '%s' in stack\n", s);
 			push(atof(s));
 			break;
 		case '+':
