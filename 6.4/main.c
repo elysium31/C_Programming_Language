@@ -33,7 +33,6 @@ main(int argc, char *argv[])
 	struct tnode *root;
 	char word[MAXWORD];
 	struct tnode **list;
-	struct tnode **list_copy;
 
 	int tree_size = 0;
 
@@ -42,10 +41,9 @@ main(int argc, char *argv[])
 		if (isalpha(word[0]))
 			root = addtreex(root, word, &tree_size);
 	printf("tree size = %d\n", tree_size);
-	list = malloc(tree_size * sizeof(struct tnode *));
+	list = (struct tnode **) malloc(tree_size * sizeof(struct tnode *));
 	listtree(list, root);
 	qsort(list, tree_size, sizeof(struct tnode *), compare_tnode);
-//	sortlist(list, NUM);
 	printlist(list, tree_size);
 	return 0;
 }
@@ -62,9 +60,9 @@ void listtree(struct tnode **l, struct tnode *t)
 
 int compare_tnode(const void *a, const void *b)
 {
-	const struct tnode *A = a;
-	const struct tnode *B = b;
-	return A->count - B->count;
+	const struct tnode *A = *(struct tnode * const *)a;
+	const struct tnode *B = *(struct tnode * const *)b;
+	return B->count - A->count;
 }
 
 void printlist(struct tnode **l, int size)
